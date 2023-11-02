@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import {Breadcrumb, ConfigProvider, Layout, Menu, theme} from 'antd';
 import {Route, Routes} from "react-router";
+import DataSourceComponent from "./pages/DataSourceComponent";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -89,6 +90,7 @@ const App = () => {
                     >
                         <Routes>
                             <Route path={'/test'} element={<TestElem/>}></Route>
+                            <Route path={'/dataSourceTest'} element={<DataSourceComponent/>}></Route>
                         </Routes>
                     </Content>
                     <Footer
