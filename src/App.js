@@ -5,6 +5,7 @@ import {
     SlidersOutlined,
 
 } from '@ant-design/icons';
+import DataModel from "./pages/dataModel";
 import {Breadcrumb, ConfigProvider, Layout, Menu, theme} from 'antd';
 import {Route, Routes} from "react-router";
 
@@ -89,6 +90,7 @@ const App = () => {
                     >
                         <Routes>
                             <Route path={'/test'} element={<TestElem/>}></Route>
+                            <Route path={'/dataModel'} element={<DataModel/>}></Route>
                         </Routes>
                     </Content>
                     <Footer
