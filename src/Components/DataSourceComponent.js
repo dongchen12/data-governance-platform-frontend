@@ -29,6 +29,7 @@ const DataSourceComponent = () => {
             form.resetFields();
             setDataSourceFormVisible(false);
         });
+
     };
 
     //TODO:修改下面的函数，使得其能更新对应table的fieldMap，而不是更新dataSource的fieldMap
@@ -52,6 +53,7 @@ const DataSourceComponent = () => {
             setDataSourceList(updatedDataSourceList);
             setFieldMapModalVisible(false);
         });
+
     };
     //处理删除数据源的函数
     const handleDeleteDataSource = (record) => {
@@ -82,8 +84,13 @@ const DataSourceComponent = () => {
             key: 'dataSourceTag',
             render: (tag) => (
                 <Space>
-                    <Tag key={tag}>{tag}</Tag>
+                    <Tag key={tag} color='red'>{tag}</Tag>
                 </Space>)
+        },
+        {
+            title: 'Description',
+            dataIndex: ['dataSource','description'],
+            key: 'dataSourceDescription',
         },
         {
             title: 'Actions',
@@ -94,7 +101,6 @@ const DataSourceComponent = () => {
                         //删除数据源,将type设置为delete
                         danger
                         onClick={() => {
-                            //TODO:删除数据源
                             //增加个确认框
                             Modal.confirm(
                                 {   title: '确认删除数据源吗？',
@@ -212,6 +218,7 @@ const DataSourceComponent = () => {
                     </Checkbox>
                 ),
             },
+
             {
                 title: 'Actions',
                 key: 'actions',
@@ -234,8 +241,10 @@ const DataSourceComponent = () => {
                     </Space>
                 ),
             },
+
         ];
         const dataSourceTables = record.tables || [];
+        // const dataSourceTables = record.dataSource.tables || [];
         return <Table columns={tableColumns} dataSource={dataSourceTables} pagination={false} />;
     };
     return (
