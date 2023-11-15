@@ -16,7 +16,6 @@ const DataModel = () => {
             description: '这是数据表 2 的描述',
         },
     ]); // 数据表目录数据的状态
-
     const dataColumns = [
         {
             title: '表名称',
@@ -252,9 +251,23 @@ const DataModel = () => {
                             placeholder="选择模态"
                             onChange={setSequence}
                         >
-                            <Option value="时序">Time</Option>
-                            <Option value="图像">Image</Option>
-                            <Option value="文本">Text</Option>
+                            <Option value="time">时序</Option>
+                            <Option value="image">图像</Option>
+                            <Option value="text">文本</Option>
+                        </Select>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', marginBottom: 16 }}>
+                    <div style={{ flex: 1 }}>
+                        <span style={{ display: 'block', marginBottom: 4 }}>储存形态</span>
+                        <Select
+                            style={{ width: '100%' }}
+                            placeholder="选择形态"
+                            onChange={setSequence}
+                        >
+                            <Option value="struc">结构</Option>
+                            <Option value="semiStruc">半结构</Option>
+                            <Option value="nonStruc">非结构</Option>
                         </Select>
                     </div>
                 </div>
