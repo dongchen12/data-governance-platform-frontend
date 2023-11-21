@@ -8,6 +8,9 @@ import {
 import {Breadcrumb, ConfigProvider, Layout, Menu, theme} from 'antd';
 import {Route, Routes} from "react-router";
 import DataSourceComponent from "./Components/DataSourceComponent";
+import ChatBox from "./Components/Chat";
+import CodeExecution from "./Components/CodeExecution";
+import ChatPage from "./views/ChatPage";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -91,6 +94,9 @@ const App = () => {
                         <Routes>
                             <Route path={'/test'} element={<TestElem/>}></Route>
                             <Route path={'/dataSourceTest'} element={<DataSourceComponent/>}></Route>
+                            <Route path={'/chatBox'} element={<ChatBox/>}></Route>
+                            <Route path={'/Code'} element={<CodeExecution/>}></Route>
+                            <Route path={'/ChatPage'} element={<ChatPage/>}></Route>
                         </Routes>
                     </Content>
                     <Footer
