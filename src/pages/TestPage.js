@@ -1,7 +1,78 @@
 import React, {useRef} from "react";
 import {Breadcrumb, Button, theme} from "antd";
-import ModelDisplay from "../components/ModelDisplay";
-import MiddleBlock from "../temp/MiddleBlock"
+import RuleDefinition from "../components/RuleDefinition";
+
+const fields = [
+    {
+        "name": "model_col1",
+        // number
+        "type": 1,
+        "description": "testDescription",
+        "sensitive": false,
+        "encrypt": false,
+        "secretLevel": 0
+    },
+    {
+        "name": "model_col2",
+        // number
+        "type": 1,
+        "description": "testDescription",
+        "sensitive": false,
+        "encrypt": false,
+        "secretLevel": 0
+    },
+    {
+        "name": "model_col3",
+        // string
+        "type": 2,
+        "description": "testDescription",
+        "sensitive": false,
+        "encrypt": false,
+        "secretLevel": 0
+    },
+    {
+        "name": "model_col4",
+        // number
+        "type": 1,
+        "description": "testDescription",
+        "sensitive": false,
+        "encrypt": false,
+        "secretLevel": 0
+    }
+];
+
+const rules = [
+    {
+        "ruleType": 1,
+        "rule": {
+            "description": "testDescription",
+            "leftFieldName": "model_col1",
+            "rightFieldName": "model_col2",
+            "type": 3
+        }
+    },
+    {
+        "ruleType": 2,
+        "rule": {
+            "description": 'testDescription',
+            "fieldName": 'model_col3',
+        }
+    },
+    {
+        "ruleType": 3,
+        "rule": {
+            "description": 'testDescription',
+            "fieldName": 'model_col4',
+        }
+    }
+
+];
+
+const ruleTypes = [
+    {value: 1, label: '比较规则'},
+    {value: 2, label: '非空规则'},
+    {value: 3, label: '范围限制规则'}
+];
 
 const TestPage = () => {
     let ref2 = useRef();
@@ -26,15 +97,12 @@ const TestPage = () => {
                     background: colorBgContainer,
                 }}
             >
-                <MiddleBlock />
-                // 下面这个按钮和两个不同颜色的块演示了如何使用锚点进行跳转
-                // 1. 获取想要跳转的node的ref（使用useRef，并传给对应的组件）
-                // 2. 把button的点击事件设置为scroll
-                <Button onClick={() => {
-                    ref2.current.scrollIntoView({behavior: 'smooth', block: 'start'})
-                }}></Button>
-                <div style={{backgroundColor: 'black', height: 1000}}></div>
-                <div ref={ref2} style={{backgroundColor: 'blue', height: 1000}}></div>
+                <RuleDefinition columns={fields} currentRules={rules} ruleTypes={ruleTypes}/>
+                {/*<Button onClick={() => {*/}
+                {/*    ref2.current.scrollIntoView({behavior: 'smooth', block: 'start'})*/}
+                {/*}}></Button>*/}
+                {/*<div style={{backgroundColor: 'black', height: 1000}}></div>*/}
+                {/*<div ref={ref2} style={{backgroundColor: 'blue', height: 1000}}></div>*/}
             </div>
         </div>
     )
