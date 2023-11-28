@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { Layout, List, Input, Button, Avatar } from 'antd';
-
+import {Layout, List, Input, Button, Avatar, Tabs, Tag, Space, Typography} from 'antd';
+import {
+    DeleteOutlined,
+    MessageOutlined,
+    PlusOutlined,
+    SendOutlined,
+    SmileOutlined,
+    UserOutlined
+} from "@ant-design/icons";
+import MessageList from "./MessageList";
 const { Sider, Content } = Layout;
 
 const ChatBox = () => {
@@ -11,16 +19,21 @@ const ChatBox = () => {
 
     const handleStartConversation = () => {
         // 创建新的会话
-        const newConversation = { id: Date.now(), name: `会话 ${conversations.length + 1}` };
+        const newConversation = { id: Date.now(), name: `会话 ${conversations.length + 1}` , messages: []};
         setConversations([...conversations, newConversation]);
-        setCurrentConversation(newConversation.id);
+        setCurrentConversation(newConversation);
+        //TODO：保存到数据库
+
     };
 
     const handleSwitchConversation = (conversationId) => {
-        setCurrentConversation(conversationId);
+           // 切换会话
+        const conversation = conversations.find((conversation) => conversation.id === conversationId);
+        setCurrentConversation(conversation);
         // 在实际应用中，你可能需要从后端获取相应会话的聊天记录
         // 这里只是一个简单的示例，清空了消息记录
-        setMessages([]);
+        setMessages(conversation.messages);
+
     };
 
     const handleSendMessage = () => {
@@ -29,70 +42,84 @@ const ChatBox = () => {
         }
 
         // 添加用户发送的消息
+        let   newMessaage =messages;
+        // alert("before add"+JSON.stringify(newMessaage));
         const updatedMessages = [...messages, { type: 'user', content: inputValue }];
         setMessages(updatedMessages);
+        newMessaage.push({ type: 'user', content: inputValue });
+
+        // 重置输入框
         setInputValue('');
 
         // 模拟机器人回复，这里只是简单的示例
         setTimeout(() => {
-            const robotReply = '这是机器人的回复，你可以根据实际情况调整';
+            const robotReply = '这是机器人的回复，example：如下是查询物理系老师的的sql代码：select * from teacher where department = "物理系"';
             const updatedMessagesWithReply = [...updatedMessages, { type: 'robot', content: robotReply }];
             setMessages(updatedMessagesWithReply);
+            newMessaage.push({ type: 'robot', content: robotReply });
+            // alert("after add"+JSON.stringify(newMessaage));
+           //将对话存入conversations
+            const updatedConversations = conversations.map((conversation) => {
+                if (conversation.id === currentConversation.id) {
+                    return { ...conversation, messages: newMessaage };
+                }
+                return conversation;
+            }
+            );
+
+            setConversations(updatedConversations);
         }, 500); // 模拟机器人回复延迟，实际中需要发送到后端并获取响应
     };
 
+
     return (
-        <Layout style={{ height: '100vh' }}>
-            <Content style={{ display: 'flex', flexDirection: 'column', height: '85%' }}>
+        <Layout style={{ height: '81vh' }} >
+            <Content style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <div style={{ flex: 1, display: 'flex' }}>
-                    <Sider theme="light" width={200} style={{ padding: '16px', display: 'flex', flexDirection: 'column' }}>
+                    <Sider theme="light" width={200} style={{ padding: '16px', display: 'flex', flexDirection: 'column',height:'110%' }} >
                         {/* 开始新会话按钮 */}
-                        <Button type="primary" onClick={handleStartConversation} style={{ marginBottom: '10px' }}>
+                        <Button type="primary" onClick={handleStartConversation} style={{ marginBottom: '10px' }} icon={<PlusOutlined/>} >
                             开始新会话
                         </Button>
                         {/* 侧边会话列表 */}
-                        <List
-                            dataSource={conversations}
-                            renderItem={(conversation) => (
-                                <List.Item
-                                    style={{ textAlign: 'left', cursor: 'pointer' }}
-                                    onClick={() => handleSwitchConversation(conversation.id)}
-                                >
-                                    {conversation.name}
-                                </List.Item>
-                            )}
-                        />
+                        <div style={{ overflowY: 'auto', maxHeight:550 }}>
+                            <List
+                                dataSource={conversations}
+                                renderItem={conversation => (
+                                    <List.Item
+                                        style={{
+                                            textAlign: 'left',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            backgroundColor: conversation.id === currentConversation?.id ? '#e6f7ff' : '',
+                                        }}
+                                        onClick={() => handleSwitchConversation(conversation.id)}
+                                    >
+                                        <MessageOutlined style={{ marginRight: 35 }} />
+                                        <List.Item.Meta title={conversation.name} />
+                                        <Button icon={<DeleteOutlined />} shape="circle"  onClick={
+                                            () => {
+                                                const updatedConversations = conversations.filter((c) => c.id !== conversation.id);
+                                                setConversations(updatedConversations);
+                                                //TODO：保存到数据库
+                                            }
+                                        }/>
+                                    </List.Item>
+                                )}
+                            />
+                        </div>
+
                     </Sider>
                     <Content style={{ padding: '16px', flex: 1, overflowY: 'auto' }}>
                         {/* 聊天框 */}
                         {currentConversation && (
-                            <List
-                                dataSource={messages}
-                                renderItem={(item) => (
-                                    <List.Item
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'flex-start',
-                                        }}
-                                    >
-                                        {item.type === 'robot' ? (
-                                            <Avatar src="robot-avatar.jpg" alt="Robot Avatar" style={{ marginRight: '8px' }} />
-                                        ) : (
-                                            <div style={{ flex: 1 }} />
-                                        )}
-                                        <div style={{ maxWidth: '70%', wordWrap: 'break-word' }}>{item.content}</div>
-                                        {item.type === 'user' ? (
-                                            <Avatar src="user-avatar.jpg" alt="User Avatar" style={{ marginLeft: '8px' }} />
-                                        ) : (
-                                            <div style={{ flex: 1 }} />
-                                        )}
-                                    </List.Item>
-                                )}
-                            />
+
+                           <MessageList messages={messages} />
                         )}
                     </Content>
                 </div>
-                <div style={{ marginTop: '10px', display: 'flex',marginLeft:'200px' }}>
+                <div style={{ marginBottom: '10px', display: 'flex',marginLeft:'200px' }}>
                     <Input
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
@@ -100,7 +127,7 @@ const ChatBox = () => {
                         placeholder="输入消息..."
                         style={{ flex: 1 }} // 调整这里的样式，去掉 width: '80%'
                     />
-                    <Button type="primary" onClick={handleSendMessage} style={{ marginLeft: '10px' }}>
+                    <Button type="primary" onClick={handleSendMessage} style={{ marginLeft: '10px' }} icon={<SendOutlined/>}>
                         发送
                     </Button>
                 </div>

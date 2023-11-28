@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import {Row, Col, Card} from 'antd';
 import ChatBox from "../Components/Chat";
 import CodeExecution from "../Components/CodeExecution";
 
@@ -7,15 +7,15 @@ const ChatPage = () => {
     return (
 
             <Row>
-                <Col span={16} >
-                    {/* 左侧组件，宽度为8（可以根据需要调整） */}
-                    {/* 这里替换为你的左侧组件 */}
+                <Col span={14}  >
+               <Card title="会话窗口" bordered={true} style={{marginLeft:"-15px"}}>
                     <ChatBox/>
+               </Card>
                 </Col>
-                <Col span={8}>
-                    {/* 右侧组件，宽度为16（可以根据需要调整） */}
-                    {/* 这里替换为你的右侧组件 */}
+                <Col span={10}>
+                  <Card title="代码执行区">
                     <CodeExecution />
+                  </Card>
                 </Col>
             </Row>
 

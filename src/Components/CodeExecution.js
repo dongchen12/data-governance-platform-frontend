@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button, message } from 'antd';
+import {Input, Button, message, Card} from 'antd';
 
 const { TextArea } = Input;
 
@@ -16,7 +16,7 @@ const CodeExecution = () => {
         message.loading({ content: '执行中...', key: 'execution' });
         setTimeout(() => {
             // 假设这里是从后端获取的结果
-            const mockResult = `执行结果：${code}`;
+            const mockResult = code;
             setResult(mockResult);
             message.success({ content: '执行完成', key: 'execution', duration: 2 });
         }, 2000);
@@ -32,14 +32,17 @@ const CodeExecution = () => {
                 placeholder="在此粘贴代码"
                 value={code}
                 onChange={handleCodeChange}
-                autoSize={{ minRows: 6 }}
+                //固定大小
+                style={{ width: '550px', height: '150px' }}
             />
             <Button type="primary" onClick={executeCode} style={{ marginTop: '10px' }}>
                 执行代码
             </Button>
             <div style={{ marginTop: '20px' }}>
                 <h3>执行结果：</h3>
-                <div style={{ border: '1px solid #d9d9d9', padding: '10px' }}>{result}</div>
+                <pre style={{ whiteSpace: 'pre-wrap', backgroundColor: '#f5f5f5', padding: '10px', overflowY: 'auto', height: '407px' }}>
+          {result}
+        </pre>
             </div>
         </div>
     );
