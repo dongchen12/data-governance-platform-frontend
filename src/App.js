@@ -1,36 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     CloudDownloadOutlined,
     PieChartOutlined,
     SlidersOutlined,
-
 } from '@ant-design/icons';
 import DataModel from "./pages/dataModel";
-import {Breadcrumb, ConfigProvider, Layout, Menu, theme} from 'antd';
-import {Route, Routes} from "react-router";
+import { Breadcrumb, ConfigProvider, Layout, Menu, theme } from 'antd';
+import {Route, Routes, Link, Navigate} from "react-router-dom";
+import ChatPage from "./pages/ChatPage";
 
-const {Header, Content, Footer, Sider} = Layout;
-
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
+const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
-    getItem('数据汇集', '1', <PieChartOutlined/>, [
-        getItem('模型配置', 'sub1', <SlidersOutlined/>),
-        getItem('数据源配置', 'sub2', <CloudDownloadOutlined/>),
-    ]),
+    { label: '数据模型', key: '/dataModel', icon: <PieChartOutlined /> },
+    { label: '会话页', key: '/chatPage', icon: <CloudDownloadOutlined /> },
+    { label: '测试页', key: '/test', icon: <SlidersOutlined /> },
 ];
 
 const App = () => {
     const [collapsed, setCollapsed] = useState(false);
     const {
-        token: {colorBgContainer},
+        token: { colorBgContainer },
     } = theme.useToken();
 
     const TestElem = () => {
@@ -42,7 +32,7 @@ const App = () => {
                     }}
                 >
                     <Breadcrumb.Item>User</Breadcrumb.Item>
-                    <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    <Breadcrumb.Item>GagaDuck</Breadcrumb.Item>
                 </Breadcrumb>
                 <div
                     style={{
@@ -51,11 +41,12 @@ const App = () => {
                         background: colorBgContainer,
                     }}
                 >
-                    Bill is a cat.
+                    GagaDuck is a duck.
                 </div>
             </>
         )
     }
+
     return (
         <ConfigProvider theme={{
             components: {
@@ -72,9 +63,15 @@ const App = () => {
                 }}
             >
                 <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                    {/*下面这里是放logo的地方*/}
-                    <div style={{height: 60, width: 200,  backgroundColor: "#FFFFFF"}}></div>
-                    <Menu defaultSelectedKeys={['1']} defaultOpenKeys={['1']} mode="inline" items={items}/>
+                    {/* 下面这里是放logo的地方 */}
+                    <div style={{ height: 60, width: 200, backgroundColor: "#FFFFFF" }}></div>
+                    <Menu defaultSelectedKeys={['/dataModel']} defaultOpenKeys={['/dataModel']} mode="inline">
+                        {items.map(item => (
+                            <Menu.Item key={item.key} icon={item.icon}>
+                                <Link to={item.key}>{item.label}</Link>
+                            </Menu.Item>
+                        ))}
+                    </Menu>
                 </Sider>
                 <Layout>
                     <Header
@@ -89,8 +86,11 @@ const App = () => {
                         }}
                     >
                         <Routes>
-                            <Route path={'/test'} element={<TestElem/>}></Route>
-                            <Route path={'/dataModel'} element={<DataModel/>}></Route>
+                            <Route path={'/dataModel'} element={<DataModel />} />
+                            <Route path={'/chatPage'} element={<ChatPage />} />
+                            <Route path={'/test'} element={<TestElem />} />
+                            {/* 设置默认路由 */}
+                            <Route path={'/'} element={<Navigate to="/dataModel" />} />
                         </Routes>
                     </Content>
                     <Footer
@@ -105,4 +105,5 @@ const App = () => {
         </ConfigProvider>
     );
 };
+
 export default App;
