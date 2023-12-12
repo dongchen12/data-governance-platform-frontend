@@ -74,8 +74,11 @@ const ruleTypes = [
     {value: 3, label: '范围限制规则'}
 ];
 
+const MockTreeData = {
+
+}
+
 const TestPage = () => {
-    let ref2 = useRef();
     const {
         token: {colorBgContainer},
     } = theme.useToken();

@@ -8,6 +8,7 @@ import {
 import {Breadcrumb, ConfigProvider, Layout, Menu, theme, App as AntdApp, Button, Divider} from 'antd';
 import {Route, Routes} from "react-router";
 import TestPage from "./pages/TestPage";
+import DataAssetManagementPage from "./pages/DataAssetManagementPage";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -72,7 +73,7 @@ const App = () => {
                             }}
                         >
                             <Routes>
-                                <Route path={'/test'} element={<TestPage/>}></Route>
+                                <Route path={'/test'} element={<DataAssetManagementPage/>}></Route>
                             </Routes>
                         </Content>
                         <Footer
